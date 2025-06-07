@@ -19,6 +19,7 @@ export default function ProtectedLayout({
               <Link href={"/"}>Next.js Supabase Starter</Link>
               <div className="flex items-center gap-2">
                 <DeployButton />
+                <ThemeSwitcher/>
               </div>
             </div>
             <AuthButton />
