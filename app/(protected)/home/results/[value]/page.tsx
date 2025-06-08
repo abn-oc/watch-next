@@ -10,7 +10,7 @@ export default function Results() {
 
     const router = useRouter();
     const params: string = String(useParams().value);
-    const [value, setValue] = useState<string>(params);
+    const [value, setValue] = useState<string>(decodeURIComponent(params));
     const [results, setResults] = useState<SearchItem[]>([]);
 
     async function handleSearch(e: FormEvent<HTMLFormElement>) {
@@ -54,7 +54,7 @@ export default function Results() {
 
                 {/* test result */}
                 <div className="flex flex-row gap-4 flex-wrap justify-center">
-                    {results.map((result, index) => <SearchItem key={index} item={result} />)}
+                    {results && results.map((result, index) => <SearchItem key={index} item={result} />)}
                 </div>
 
             </TabsContent>

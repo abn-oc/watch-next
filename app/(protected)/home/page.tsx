@@ -46,7 +46,7 @@ export default function Search() {
 
         {/* test result */}
         <div className="flex flex-row gap-4 flex-wrap justify-center">
-          {results.map((result, index) => <SearchItem key={index} item={result} />)}
+          {results && results.map((result, index) => <SearchItem key={index} item={result} />)}
         </div>
 
       </TabsContent>
