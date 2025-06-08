@@ -1,5 +1,4 @@
 "use client"
-import SearchItem from "@/components/search-item";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search as SearchIcon } from 'lucide-react';
@@ -11,7 +10,6 @@ export default function Search() {
 
   const router = useRouter();
   const [value, setValue] = useState<string>('');
-  const [results, setResults] = useState<SearchItem[]>([]);
 
   async function handleSearch(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -42,11 +40,6 @@ export default function Search() {
               onChange={e => setValue(e.target.value)}
             />
           </form>
-        </div>
-
-        {/* test result */}
-        <div className="flex flex-row gap-4 flex-wrap justify-center">
-          {results && results.map((result, index) => <SearchItem key={index} item={result} />)}
         </div>
 
       </TabsContent>

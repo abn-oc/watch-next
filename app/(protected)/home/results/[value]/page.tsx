@@ -54,6 +54,7 @@ export default function Results() {
 
                 {/* test result */}
                 <div className="flex flex-row gap-4 flex-wrap justify-center">
+                    {!results && <p>No results found...</p>}
                     {results && results.map((result, index) => <SearchItem key={index} item={result} />)}
                 </div>
 
