@@ -17,7 +17,7 @@ export default async function Home() {
 
   const { data, error } = await supabase.auth.getUser();
   if (data?.user) {
-    redirect('/home')
+    redirect('/home');
   }
 
   return (

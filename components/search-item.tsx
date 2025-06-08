@@ -1,5 +1,6 @@
+import Link from "next/link";
 import { Button } from "./ui/button";
-import { Card, CardDescription, CardTitle, CardContent, CardAction } from "./ui/card";
+import { Card, CardDescription, CardTitle, CardContent, CardAction, CardFooter } from "./ui/card";
 
 type prop = {
     item: SearchItem;
@@ -15,12 +16,19 @@ export default function SearchItem({ item }: prop) {
                     className="w-36 h-auto"
                 />
                 <div className="text-center">
-                    <CardTitle>{item.Title}</CardTitle>
-                    <CardDescription>
+                    <CardTitle><Link href={`/details/${item.imdbID}`}>{item.Title}</Link></CardTitle>
+                    <CardDescription className="my-2">
                         {item.Type} &bull; {item.Year}
                     </CardDescription>
-                        <a href="#" className="ml-auto inline-block text-sm underline-offset-4 hover:underline">details {">"}</a>
                 </div>
+                <CardFooter className="flex-col gap-2">
+                    <Button type="submit" className="w-full">
+                        add to watch list
+                    </Button>
+                    <Button variant="outline" className="w-full">
+                        add to completed list
+                    </Button>
+                </CardFooter>
             </CardContent>
         </Card>
     );
