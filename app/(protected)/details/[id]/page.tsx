@@ -3,16 +3,14 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 
-type DetailsProps = {
-  params: {
-    id: string;
-  };
-};
-
-export default async function Details( { params } : DetailsProps ) {
-
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+    const resolvedParams = await params;
     const apikey: string | undefined = process.env.NEXT_PUBLIC_OMDB_API_KEY;
-    const data: MediaDetails = (await (await fetch(`http://www.omdbapi.com/?apikey=${apikey}&i=${params.id}&plot=full`)).json());
+    const data: MediaDetails = (await (await fetch(`http://www.omdbapi.com/?apikey=${apikey}&i=${resolvedParams.id}&plot=full`)).json());
 
     return (
     <main className="max-w-6xl mx-auto p-6 space-y-8">
@@ -73,7 +71,7 @@ export default async function Details( { params } : DetailsProps ) {
       <Separator />
 
       {/* Reviews Section */}
-      <Reviews oid={params.id} />
+      <Reviews oid={resolvedParams.id} />
     </main>
   );
 }

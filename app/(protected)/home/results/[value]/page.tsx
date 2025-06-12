@@ -26,7 +26,7 @@ export default function Results() {
             const results: SearchItem[] = (await (await fetch(`http://www.omdbapi.com/?apikey=${apikey}&s=${value}`)).json()).Search;
             setResults(results);
         })()
-    }, [])
+    }, [value])
 
     return (
         <Tabs defaultValue="search" className="items-center flex flex-col gap-8">

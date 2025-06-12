@@ -41,7 +41,7 @@ export function LoginForm({
       // Update this route to redirect to an authenticated route. The user already has an active session.
       //
       const pid = data.user.id;
-      let { data: profiles, error: profileError } = await supabase
+      const { data: profiles } = await supabase
         .from('profiles')
         .select("*")
         .eq('uid', pid);

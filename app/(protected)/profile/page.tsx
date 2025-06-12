@@ -72,7 +72,7 @@ export default function ProfilePage() {
             setLoading(false);
         })()
 
-    }, []);
+    }, [supabase]);
 
     const handleUpdate = async () => {
         if (!uid) return;

@@ -73,7 +73,7 @@ export default function Reviews({ oid }: ReviewsProps) {
     };
 
     fetchReviewsAndProfiles();
-  }, [oid]);
+  }, [oid, supabase]);
 
   const handleSubmit = async () => {
     const { data: { user } } = await supabase.auth.getUser();

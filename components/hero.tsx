@@ -1,5 +1,3 @@
-import { PlayCircle, Eye, Bookmark, Zap } from "lucide-react";
-
 export function Hero() {
   return (
     <div className="flex flex-col gap-16 items-center min-h-[70vh] justify-center px-4">

@@ -7,10 +7,18 @@ import { LogoutButton } from "./logout-button";
 import { ProfileButton } from "./profile-button";
 import Image from 'next/image';
 import { useEffect, useState } from "react";
+import { User } from '@supabase/supabase-js';
+
+type Profile = {
+  uid: string;
+  username: string;
+  avatar_url: string;
+  bio: string;
+};
 
 export function AuthButton() {
-  const [user, setUser] = useState<any>(null);
-  const [profile, setProfile] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const supabase = createClient();
 
   useEffect(() => {
@@ -28,7 +36,7 @@ export function AuthButton() {
     };
 
     getUser();
-  }, []);
+  }, [supabase]);
 
   return user ? (
     <div className="flex items-center gap-4">

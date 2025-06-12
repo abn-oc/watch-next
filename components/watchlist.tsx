@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext } from "react";
-import { WatchlistContext } from "@/app/(protected)/layout";
+import { WatchlistContext } from "@/lib/contexts/watchlist-context";
 import SearchItem from "./search-item";
 
 export default function WatchList() {
@@ -26,7 +26,7 @@ export default function WatchList() {
         <div className="flex flex-row gap-4 flex-wrap justify-center">
             {!formattedWatchlists.length && <p>No items in watchlist...</p>}
             {formattedWatchlists.map((item, index) => (
-                // @ts-ignore
+                // @ts-expect-error - The item type is compatible with SearchItem props
                 <SearchItem key={index} item={item} />
             ))}
         </div>

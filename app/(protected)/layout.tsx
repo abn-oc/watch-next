@@ -4,31 +4,9 @@ import { DeployButton } from "@/components/deploy-button";
 import { AuthButton } from "@/components/auth-button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import Link from "next/link";
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-
-// Define types for our data
-type WatchlistItem = {
-  uid: string;
-  oid: string;
-  poster: string;
-  title: string;
-  type: string;
-  year: string;
-};
-
-type WatchlistContextType = {
-  watchlists: WatchlistItem[];
-  setWatchlists: React.Dispatch<React.SetStateAction<WatchlistItem[]>>;
-  completedlists: WatchlistItem[];
-  setCompletedlists: React.Dispatch<React.SetStateAction<WatchlistItem[]>>;
-  addToWatchlist: (item: WatchlistItem) => Promise<void>;
-  addToCompletedList: (item: WatchlistItem) => Promise<void>;
-  removeFromWatchlist: (oid: string) => Promise<void>;
-  removeFromCompletedList: (oid: string) => Promise<void>;
-};
-
-export const WatchlistContext = createContext<WatchlistContextType | undefined>(undefined);
+import { WatchlistContext, WatchlistItem } from "@/lib/contexts/watchlist-context";
 
 export default function ProtectedLayout({
   children,
@@ -62,7 +40,7 @@ export default function ProtectedLayout({
     };
 
     fetchData();
-  }, []);
+  }, [supabase]);
 
   // Database sync functions
   const addToWatchlist = async (item: WatchlistItem) => {

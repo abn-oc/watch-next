@@ -5,7 +5,8 @@ import { Button } from "./ui/button";
 import { Card, CardDescription, CardTitle, CardContent, CardFooter } from "./ui/card";
 import { createClient } from "@/lib/supabase/client";
 import { useContext } from "react";
-import { WatchlistContext } from "@/app/(protected)/layout";
+import { WatchlistContext } from "@/lib/contexts/watchlist-context";
+import Image from "next/image";
 
 type prop = {
     item: SearchItem;
@@ -61,9 +62,11 @@ export default function SearchItem({ item }: prop) {
     return (
         <Card className="min-w-56 max-w-56">
             <CardContent className="flex flex-col gap-4 items-center">
-                <img
+                <Image
                     src={item.Poster}
                     alt={item.Title}
+                    width={144}
+                    height={216}
                     className="w-36 h-auto"
                 />
                 <div className="text-center">
