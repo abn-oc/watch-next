@@ -4,6 +4,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search as SearchIcon } from 'lucide-react';
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import WatchList from "@/components/watchlist";
+import CompletedList from "@/components/completedlist";
 
 export default function Search() {
 
@@ -42,6 +44,14 @@ export default function Search() {
           </form>
         </div>
 
+      </TabsContent>
+
+      <TabsContent value="watchlist">
+        <WatchList />
+      </TabsContent>
+
+      <TabsContent value="completedlist">
+        <CompletedList />
       </TabsContent>
 
     </Tabs>
