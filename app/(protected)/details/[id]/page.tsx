@@ -1,3 +1,4 @@
+import Reviews from "@/components/reviews";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
@@ -68,6 +69,11 @@ export default async function Details( { params } : DetailsProps ) {
           ))}
         </div>
       </section>
+
+      <Separator />
+
+      {/* Reviews Section */}
+      <Reviews oid={params.id} />
     </main>
   );
 }
