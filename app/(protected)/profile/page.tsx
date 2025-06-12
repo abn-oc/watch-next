@@ -84,7 +84,7 @@ export default function ProfilePage() {
 
         const { error: updateError } = await supabase
             .from("profiles")
-            .update({ username, bio })
+            .update({ username, bio, avatar_url })
             .eq("uid", uid);
 
         if (updateError) {

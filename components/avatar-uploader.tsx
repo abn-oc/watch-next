@@ -54,6 +54,7 @@ export default function AvatarUploader({ userId, onUploadSuccess }: { userId: st
         onUploadSuccess?.(avatarUrl);
     };
 
+
     return (
         <div>
             <input type="file" onChange={handleUpload} accept="image/*" disabled={uploading} />
