@@ -1,35 +1,34 @@
-import { createClient } from "@/lib/supabase/client"
+"use client";
+
+import { useContext } from "react";
+import { WatchlistContext } from "@/app/(protected)/layout";
 import SearchItem from "./search-item";
-import { useEffect, useState } from "react";
 
 export default function WatchList() {
+    const context = useContext(WatchlistContext);
+    
+    if (!context) {
+        throw new Error('WatchList must be used within a WatchlistContext.Provider');
+    }
+    
+    const { watchlists } = context;
 
-    const supabase = createClient();
-    const [WL, setWL] = useState<SearchItem[] | null>([]);
-
-    useEffect(() => {
-        (async () => {
-            const { data } = await supabase.auth.getUser();
-            let { data: watchlists, error } = await supabase
-                .from('watchlists')
-                .select("*")
-                .eq('uid', data.user?.id);
-            const formatted = watchlists?.map((item) => ({
-                imdbID: item.oid,
-                Title: item.title,
-                Year: item.year,
-                Type: item.type,
-                Poster: item.poster,
-            }));
-            console.log(formatted);
-            setWL(formatted ? formatted : null);
-        })()
-    }, [])
+    // Format the watchlist data to match the SearchItem type
+    const formattedWatchlists = watchlists.map((item) => ({
+        imdbID: item.oid,
+        Title: item.title,
+        Year: item.year,
+        Type: item.type,
+        Poster: item.poster,
+    }));
 
     return (
         <div className="flex flex-row gap-4 flex-wrap justify-center">
-            {!WL && <p>No results found...</p>}
-            {WL && WL.map((result, index) => <SearchItem key={index} item={result} />)}
+            {!formattedWatchlists.length && <p>No items in watchlist...</p>}
+            {formattedWatchlists.map((item, index) => (
+                // @ts-ignore
+                <SearchItem key={index} item={item} />
+            ))}
         </div>
-    )
+    );
 }

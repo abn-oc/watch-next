@@ -1,7 +1,9 @@
 "use client"
+import CompletedList from "@/components/completedlist";
 import SearchItem from "@/components/search-item";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import WatchList from "@/components/watchlist";
 import { Search as SearchIcon } from 'lucide-react';
 import { useParams, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
@@ -59,6 +61,14 @@ export default function Results() {
                 </div>
 
             </TabsContent>
+
+                  <TabsContent value="watchlist">
+                    <WatchList />
+                  </TabsContent>
+            
+                  <TabsContent value="completedlist">
+                    <CompletedList />
+                  </TabsContent>
 
         </Tabs>
     )

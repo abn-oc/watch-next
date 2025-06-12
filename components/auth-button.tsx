@@ -1,33 +1,45 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/client";
 import { LogoutButton } from "./logout-button";
 import { ProfileButton } from "./profile-button";
 import Image from 'next/image';
+import { useEffect, useState } from "react";
 
-export async function AuthButton() {
-  const supabase = await createClient();
+export function AuthButton() {
+  const [user, setUser] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
+  const supabase = createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
 
-  //
-  const { data: profiles, error: profileError } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("uid", user?.id);
+      if (user) {
+        const { data: profiles } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("uid", user.id);
+        setProfile(profiles?.[0]);
+      }
+    };
+
+    getUser();
+  }, []);
 
   return user ? (
     <div className="flex items-center gap-4">
       {/* Hey, {user.email}! */}
       <Image
-        src={profiles && profiles[0].avatar_url || "/default.jpg"}
+        src={profile?.avatar_url || "/default.jpg"}
         width={40}
         height={40}
         className="rounded-full object-cover"
         alt="avatar" />
-      {profiles && profiles[0].username}
+      {profile?.username}
       <ProfileButton />
       <LogoutButton />
     </div>
