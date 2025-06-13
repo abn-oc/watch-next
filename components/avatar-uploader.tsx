@@ -1,63 +1,86 @@
-"use client";
-import { useState } from 'react';
+'use client';
+
+import { useState, useRef } from 'react';
 import { createClient } from "@/lib/supabase/client";
+import { Button } from "./ui/button";
+import { Camera, Loader2 } from "lucide-react";
 
-export default function AvatarUploader({ userId, onUploadSuccess }: { userId: string, onUploadSuccess: (url: string) => void; }) {
+export default function AvatarUploader({
+  userId,
+  onUploadSuccess,
+}: {
+  userId: string;
+  onUploadSuccess: (url: string) => void;
+}) {
+  const supabase = createClient();
+  const [uploading, setUploading] = useState(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
-    const supabase = createClient();
-    const [uploading, setUploading] = useState(false);
+  const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
 
-    const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        console.log("got file");
-        console.log(file);
-        if (!file) return;
+    setUploading(true);
+    const fileExt = file.name.split('.').pop();
+    const filePath = `${userId}.${fileExt}`;
 
-        setUploading(true);
-        const fileExt = file.name.split('.').pop();
-        const filePath = `${userId}.${fileExt}`;
+    const { error: uploadError } = await supabase.storage
+      .from('avatars')
+      .upload(filePath, file, {
+        upsert: true,
+      });
 
-        console.log(`uploading in: ${filePath}`)
+    if (uploadError) {
+      console.error(uploadError);
+      alert('Upload failed');
+      setUploading(false);
+      return;
+    }
 
-        const { error: uploadError } = await supabase.storage
-            .from('avatars')
-            .upload(filePath, file, {
-                upsert: true,
-            });
+    const { data: publicUrlData } = supabase.storage
+      .from('avatars')
+      .getPublicUrl(filePath);
 
-        if (uploadError) {
-            console.log(uploadError);
-            alert('Upload failed');
-            setUploading(false);
-            return;
-        }
+    const avatarUrl = publicUrlData.publicUrl;
 
-        console.log("uploaded on bucket")
+    const { error: updateError } = await supabase
+      .from('profiles')
+      .update({ avatar_url: avatarUrl })
+      .eq('uid', userId);
 
-        const { data: publicUrlData } = supabase.storage
-            .from('avatars')
-            .getPublicUrl(filePath);
+    if (updateError) {
+      console.error(updateError);
+      alert('Failed to update avatar URL');
+    }
 
-        const avatarUrl = publicUrlData.publicUrl;
+    setUploading(false);
+    onUploadSuccess?.(avatarUrl);
+  };
 
-        const { error: updateError } = await supabase
-            .from('profiles')
-            .update({ avatar_url: avatarUrl })
-            .eq('uid', userId);
-
-        if (updateError) {
-            alert('Failed to update avatar URL');
-        }
-
-        setUploading(false);
-
-        onUploadSuccess?.(avatarUrl);
-    };
-
-
-    return (
-        <div>
-            <input type="file" onChange={handleUpload} accept="image/*" disabled={uploading} />
-        </div>
-    );
+  return (
+    <div className="relative">
+      <input
+        ref={inputRef}
+        type="file"
+        onChange={handleUpload}
+        accept="image/*"
+        disabled={uploading}
+        className="hidden"
+      />
+      <Button
+        type="button"
+        size="icon"
+        variant="secondary"
+        className="rounded-full w-8 h-8 shadow-md hover:shadow-lg transition-shadow"
+        disabled={uploading}
+        onClick={() => inputRef.current?.click()}
+      >
+        {uploading ? (
+          <Loader2 className="w-4 h-4 animate-spin" />
+        ) : (
+          <Camera className="w-4 h-4" />
+        )}
+      </Button>
+    </div>
+  );
 }

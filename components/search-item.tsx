@@ -65,9 +65,9 @@ export default function SearchItem({ item }: prop) {
                 <Image
                     src={item.Poster}
                     alt={item.Title}
-                    width={144}
-                    height={216}
-                    className="w-36 h-auto"
+                    width={216}
+                    height={300}
+                    className="w-full h-auto transition-transform hover:scale-105"
                 />
                 <div className="text-center">
                     <CardTitle>

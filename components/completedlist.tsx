@@ -3,6 +3,7 @@
 import { useContext } from "react";
 import { WatchlistContext } from "@/lib/contexts/watchlist-context";
 import SearchItem from "./search-item";
+import { CheckCircle } from "lucide-react";
 
 export default function CompletedList() {
     const context = useContext(WatchlistContext);
@@ -23,12 +24,23 @@ export default function CompletedList() {
     }));
 
     return (
-        <div className="flex flex-row gap-4 flex-wrap justify-center">
-            {!formattedCompletedlists.length && <p>No items in completedlist...</p>}
-            {formattedCompletedlists.map((item, index) => (
-                // @ts-expect-error - The item type is compatible with SearchItem props
-                <SearchItem key={index} item={item} />
-            ))}
+        <div className="w-full">
+            {!formattedCompletedlists.length ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <CheckCircle className="w-12 h-12 text-muted-foreground mb-4" />
+                    <h3 className="text-lg font-semibold">No completed items yet</h3>
+                    <p className="text-sm text-muted-foreground mt-2">
+                        Add movies and TV shows to your completed list as you finish watching them
+                    </p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {formattedCompletedlists.map((item, index) => (
+                        // @ts-expect-error - The item type is compatible with SearchItem props
+                        <SearchItem key={index} item={item} />
+                    ))}
+                </div>
+            )}
         </div>
     );
 }
