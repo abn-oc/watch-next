@@ -1,6 +1,5 @@
 "use client";
 
-import { DeployButton } from "@/components/deploy-button";
 import { AuthButton } from "@/components/auth-button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import Link from "next/link";
@@ -95,7 +94,6 @@ export default function ProtectedLayout({
             <div className="flex gap-5 items-center font-semibold">
               <Link href={"/home"}>Watch Next</Link>
               <div className="flex items-center gap-2">
-                <DeployButton />
                 <ThemeSwitcher />
               </div>
             </div>
