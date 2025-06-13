@@ -20,43 +20,58 @@ export default function SearchItem({ item }: prop) {
         throw new Error('SearchItem must be used within a WatchlistContext.Provider');
     }
 
-    const { addToWatchlist, addToCompletedList, completedlists, watchlists } = context;
+    const { 
+        addToWatchlist, 
+        addToCompletedList, 
+        removeFromWatchlist,
+        removeFromCompletedList,
+        completedlists, 
+        watchlists 
+    } = context;
 
     const isInWatchlist = watchlists?.some(w => w.oid === item.imdbID);
     const isInCompletedList = completedlists?.some(c => c.oid === item.imdbID);
 
-    const handleAddToWatchlist = async () => {
-        if (isInWatchlist) return;
+    const handleWatchlistToggle = async () => {
         const { data: userdata } = await supabase.auth.getUser();
         if (!userdata.user) return;
 
-        const watchlistItem = {
-            uid: userdata.user.id,
-            oid: item.imdbID,
-            poster: item.Poster,
-            title: item.Title,
-            type: item.Type,
-            year: item.Year
-        };
-
-        await addToWatchlist(watchlistItem);
+        if (isInWatchlist) {
+            // Remove from watchlist
+            await removeFromWatchlist(item.imdbID);
+        } else {
+            // Add to watchlist
+            const watchlistItem = {
+                uid: userdata.user.id,
+                oid: item.imdbID,
+                poster: item.Poster,
+                title: item.Title,
+                type: item.Type,
+                year: item.Year
+            };
+            await addToWatchlist(watchlistItem);
+        }
     };
 
-    const handleAddToCompletedList = async () => {
-        if (isInCompletedList) return;
+    const handleCompletedListToggle = async () => {
         const { data: userdata } = await supabase.auth.getUser();
         if (!userdata.user) return;
 
-        const completedItem = {
-            uid: userdata.user.id,
-            oid: item.imdbID,
-            poster: item.Poster,
-            title: item.Title,
-            type: item.Type,
-            year: item.Year
-        };
-
-        await addToCompletedList(completedItem);
+        if (isInCompletedList) {
+            // Remove from completed list
+            await removeFromCompletedList(item.imdbID);
+        } else {
+            // Add to completed list
+            const completedItem = {
+                uid: userdata.user.id,
+                oid: item.imdbID,
+                poster: item.Poster,
+                title: item.Title,
+                type: item.Type,
+                year: item.Year
+            };
+            await addToCompletedList(completedItem);
+        }
     };
 
     return (
@@ -80,20 +95,19 @@ export default function SearchItem({ item }: prop) {
                 <CardFooter className="flex-col gap-2">
                     <Button
                         type="button"
+                        variant={isInWatchlist ? "destructive" : "default"}
                         className="w-full"
-                        onClick={handleAddToWatchlist}
-                        disabled={isInWatchlist}
+                        onClick={handleWatchlistToggle}
                     >
-                        {isInWatchlist ? "In Watchlist" : "Add to Watchlist"}
+                        {isInWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}
                     </Button>
                     <Button
                         type="button"
-                        variant="outline"
+                        variant={isInCompletedList ? "secondary" : "outline"}
                         className="w-full"
-                        onClick={handleAddToCompletedList}
-                        disabled={isInCompletedList}
+                        onClick={handleCompletedListToggle}
                     >
-                        {isInCompletedList ? "Completed" : "Add to Completed List"}
+                        {isInCompletedList ? "Remove from Completed" : "Add to Completed List"}
                     </Button>
                 </CardFooter>
             </CardContent>
