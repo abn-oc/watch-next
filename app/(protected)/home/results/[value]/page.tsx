@@ -23,7 +23,7 @@ export default function Results() {
     useEffect(() => {
         (async () => {
             const apikey: string | undefined = process.env.NEXT_PUBLIC_OMDB_API_KEY;
-            const results: SearchItem[] = (await (await fetch(`http://www.omdbapi.com/?apikey=${apikey}&s=${value}`)).json()).Search;
+            const results: SearchItem[] = (await (await fetch(`https://www.omdbapi.com/?apikey=${apikey}&s=${value}`)).json()).Search;
             setResults(results);
         })()
     }, [value])
