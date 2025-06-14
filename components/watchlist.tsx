@@ -7,11 +7,11 @@ import { Film } from "lucide-react";
 
 export default function WatchList() {
     const context = useContext(WatchlistContext);
-    
+
     if (!context) {
         throw new Error('WatchList must be used within a WatchlistContext.Provider');
     }
-    
+
     const { watchlists } = context;
 
     // Format the watchlist data to match the SearchItem type
@@ -34,11 +34,13 @@ export default function WatchList() {
                     </p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {formattedWatchlists.map((item, index) => (
-                        // @ts-expect-error - The item type is compatible with SearchItem props
-                        <SearchItem key={index} item={item} />
-                    ))}
+                <div className="flex justify-center w-full">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        {formattedWatchlists.map((item, index) => (
+                            // @ts-expect-error - The item type is compatible with SearchItem props
+                            <SearchItem key={index} item={item} />
+                        ))}
+                    </div>
                 </div>
             )}
         </div>

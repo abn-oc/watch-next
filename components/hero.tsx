@@ -1,6 +1,6 @@
 export function Hero() {
   return (
-    <div className="flex flex-col gap-16 items-center min-h-[70vh] justify-center px-4">
+    <div className="flex flex-col gap-16 items-center sm:min-h-[60vh] min-h-[52vh] justify-center px-4">
       {/* Logo and Icon */}
       <div className="flex gap-4 justify-center items-center">
         <div className="relative">

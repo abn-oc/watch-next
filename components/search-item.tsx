@@ -15,18 +15,18 @@ type prop = {
 export default function SearchItem({ item }: prop) {
     const supabase = createClient();
     const context = useContext(WatchlistContext);
-    
+
     if (!context) {
         throw new Error('SearchItem must be used within a WatchlistContext.Provider');
     }
 
-    const { 
-        addToWatchlist, 
-        addToCompletedList, 
+    const {
+        addToWatchlist,
+        addToCompletedList,
         removeFromWatchlist,
         removeFromCompletedList,
-        completedlists, 
-        watchlists 
+        completedlists,
+        watchlists
     } = context;
 
     const isInWatchlist = watchlists?.some(w => w.oid === item.imdbID);
@@ -77,21 +77,21 @@ export default function SearchItem({ item }: prop) {
     return (
         <Card className="min-w-56 max-w-56">
             <CardContent className="flex flex-col gap-4 items-center">
-                <Image
-                    src={item.Poster}
-                    alt={item.Title}
-                    width={216}
-                    height={300}
-                    className="w-full h-auto transition-transform hover:scale-105"
-                />
-                <div className="text-center">
-                    <CardTitle>
-                        <Link href={`/details/${item.imdbID}`}>{item.Title}</Link>
-                    </CardTitle>
-                    <CardDescription className="my-2">
-                        {item.Type} &bull; {item.Year}
-                    </CardDescription>
-                </div>
+                <Link href={`/details/${item.imdbID}`} className="flex flex-col items-center gap-4">
+                    <Image
+                        src={item.Poster}
+                        alt={item.Title}
+                        width={216}
+                        height={300}
+                        className="w-full h-auto transition-transform hover:scale-105"
+                    />
+                    <div className="text-center">
+                        <CardTitle>{item.Title}</CardTitle>
+                        <CardDescription className="my-2">
+                            {item.Type} &bull; {item.Year}
+                        </CardDescription>
+                    </div>
+                </Link>
                 <CardFooter className="flex-col gap-2">
                     <Button
                         type="button"

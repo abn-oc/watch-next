@@ -80,10 +80,12 @@ export default function Results() {
                             </p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
-                            {results.map((result, index) => (
-                                <SearchItem key={index} item={result} />
-                            ))}
+                        <div className="flex justify-center w-full">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-fit">
+                                {results.map((result, index) => (
+                                    <SearchItem key={index} item={result} />
+                                ))}
+                            </div>
                         </div>
                     )}
                 </TabsContent>
